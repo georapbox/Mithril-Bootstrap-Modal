@@ -2,13 +2,13 @@
 (function () {
     'use strict';
 
-    var modal = new Modal();
+    var myModal = new Modal();
 
     var app = {
         view: function () {
             return m('div', [
-                m('.btn.btn-primary', {onclick: modal.show.bind(modal)}, 'Show modal'),
-                modal.view({
+                m('.btn.btn-primary', {onclick: myModal.show.bind(myModal)}, 'Click to show modal'),
+                myModal.view({
                     header: function () {
                         return m('h4.modal-title', 'Lorem ipsum');
                     },
@@ -17,7 +17,7 @@
                     },
                     footer: function () {
                         return m('a.btn.btn-default', {
-                            onclick: modal.hide.bind(modal)
+                            onclick: myModal.hide.bind(myModal)
                         }, 'Close');
                     }
                 })

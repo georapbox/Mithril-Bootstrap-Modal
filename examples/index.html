@@ -10,17 +10,24 @@
     <div class="container">
         <div class="row">
             <div class="col-lg-12">
-                <h1>MithrilJS + Bootstrap Modal</h1>
+                <div class="page-header">
+                    <h1>MithrilJS + Bootstrap modal dialog</h1>
+                </div>
+
+                <p class="well">
+                    A <a href="https://lhorie.github.io/mithril/">Mithril</a> implementation of a <a href="http://getbootstrap.com/javascript/#modals">Bootstrap 3</a> modal dialog.
+                </p>
+
                 <h2>Usage example</h2>
 
 <pre>
-var modal = new Modal();
+var myModal = new Modal();
 
 var app = {
     view: function () {
         return m('div', [
-            m('.btn.btn-primary', {onclick: modal.show.bind(modal)}, 'Show modal'),
-            modal.view({
+            m('.btn.btn-primary', {onclick: myModal.show.bind(myModal)}, 'Click to show modal'),
+            myModal.view({
                 header: function () {
                     return m('h4.modal-title', 'modal title goes here');
                 },
@@ -29,7 +36,7 @@ var app = {
                 },
                 footer: function () {
                     return m('a.btn.btn-default', {
-                        onclick: modal.hide.bind(modal)
+                        onclick: myModal.hide.bind(myModal)
                     }, 'Close');
                 }
             })
