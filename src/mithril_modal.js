@@ -40,6 +40,44 @@
 }('Modal', this, function () {
     'use strict';
 
+    function whichTransitionEvent() {
+        var key,
+            el = document.createElement('div'),
+            transitions = {
+                'transition': 'transitionend',
+                'OTransition': 'oTransitionEnd',
+                'MozTransition': 'transitionend',
+                'WebkitTransition': 'webkitTransitionEnd'
+            };
+
+        for (key in transitions) {
+            if (transitions.hasOwnProperty(key)) {
+                if (el.style[key] !== undefined) {
+                    el = null;
+                    return transitions[key];
+                }
+            }
+        }
+    }
+
+    /**
+     * Returns a pseudo-random number (integer or floating-point)
+     * between a min (inclusive) and a max (exclusive) value.
+     * @param {Number} min The minimum value of the range.
+     * @param {Number} max The maximum value of the range.
+     * @param {Boolean} [floatPoint=false] If true the returned number will be floating-point.
+     * @returns {Number} The pseudo-random number.
+     */
+    function randomBetween(min, max, floatPoint) {
+        var isFloatPoint = floatPoint === true;
+        min = isFloatPoint ? parseFloat(min) : parseInt(min, 10);
+        max = isFloatPoint ? parseFloat(max) : parseInt(max, 10);
+        var rInt = Math.random() * (max - min);
+        return isFloatPoint ? rInt + min : Math.floor(rInt) + min;
+    }
+
+    var transitionEvent = whichTransitionEvent();
+
     /**
 	 * Creates a modal instance.
 	 * @constructor
@@ -81,10 +119,13 @@
         // Getter / Setter for modal's visibility status.
         this.visible = m.prop(false);
 
+        // A unique identifier for every modal instance.
+        this.modalId = 'js_modal_' + randomBetween(0, 1000) + randomBetween(1000, 2000) + randomBetween(2000, 3000);
+
         // The modal's view.
         this.view = function (opts) {
             return this.visible() ?
-                m('.modal', {config: modalConfig}, [
+                m('.modal', {config: modalConfig, id: this.modalId}, [
                     m('.modal-dialog', [
                         m('.modal-content', [
                             opts.header ? m('.modal-header', [
@@ -106,8 +147,26 @@
     };
 
     proto.hide = function () {
-        this.visible = m.prop(false);
+        var that = this;
+
         document.body.classList.remove('modal-open');
+
+        if (transitionEvent) {
+            var modalEl = document.getElementById(this.modalId),
+                dialogEl = modalEl.querySelector('.modal-dialog');
+
+            dialogEl.addEventListener(transitionEvent, handleTransitionEnd, false);
+            modalEl.classList.remove('fadein');
+        } else {
+            this.visible = m.prop(false);
+        }
+
+        function handleTransitionEnd() {
+            dialogEl.removeEventListener(transitionEvent, handleTransitionEnd, false);
+            m.startComputation();
+            that.visible = m.prop(false);
+            m.endComputation();
+        }
     };
 
     proto.isVisible = function () {
