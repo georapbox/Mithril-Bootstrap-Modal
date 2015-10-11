@@ -125,7 +125,7 @@
         // The modal's view.
         this.view = function (opts) {
             return this.visible() ?
-                m('.modal', {config: modalConfig, id: this.modalId}, [
+                m('.modal', {config: modalConfig, id: this.modalId, class: opts.class}, [
                     m('.modal-dialog', [
                         m('.modal-content', [
                             opts.header ? m('.modal-header', [
