@@ -12,6 +12,7 @@ var app = {
         return m('div', [
             m('.btn.btn-primary', {onclick: myModal.show.bind(myModal)}, 'Click to show modal'),
             myModal.view({
+                class: 'rootClass',
                 header: function () {
                     return m('h4.modal-title', 'modal title goes here');
                 },
