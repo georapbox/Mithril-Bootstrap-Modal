@@ -13,6 +13,7 @@ var app = {
             m('.btn.btn-primary', {onclick: myModal.show.bind(myModal)}, 'Click to show modal'),
             myModal.view({
                 class: 'rootClass',
+                modalSizeClass: 'modal-lg',
                 header: function () {
                     return m('h4.modal-title', 'modal title goes here');
                 },

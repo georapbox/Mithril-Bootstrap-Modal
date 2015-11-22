@@ -126,7 +126,7 @@
         this.view = function (opts) {
             return this.visible() ?
                 m('.modal', {config: modalConfig, id: this.modalId, class: opts.class}, [
-                    m('.modal-dialog', [
+                    m('.modal-dialog', {class:opts.modalSizeClass}, [
                         m('.modal-content', [
                             opts.header ? m('.modal-header', [
                                 m('a.close', {onclick: this.hide.bind(this)}, m.trust('&times;')), opts.header()
